@@ -15,6 +15,7 @@
 # specific language governing permissions and limitations
 # under the License.
 
+{{- if not .Values.database.external.host }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -34,3 +35,4 @@ data:
     EXCEPTION WHEN duplicate_database THEN RAISE NOTICE '%, skipping', SQLERRM USING ERRCODE = SQLSTATE;
     END
     $$;
+{{- end }}

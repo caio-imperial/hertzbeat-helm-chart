@@ -15,7 +15,7 @@
 # specific language governing permissions and limitations
 # under the License.
 
-{{- if .Values.database.persistence.enabled }}
+{{- if and .Values.database.persistence.enabled (not .Values.database.external.host) }}
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:

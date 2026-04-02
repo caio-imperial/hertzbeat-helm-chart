@@ -86,6 +86,14 @@ database:
   tolerations: []
   affinity: {}
 
+  external:
+    host: ""
+    port: 5432
+    username: "root"
+    password: ""
+    existingSecret: ""
+    database: "hertzbeat"
+
 tsdb:
   image:
     repository: victoriametrics/victoria-metrics

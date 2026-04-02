@@ -68,6 +68,11 @@ spec:
               name: sureness
           resources:
             {{- toYaml .Values.manager.resources | nindent 12 }}
+          envFrom:
+            {{- if and .Values.database.external.host .Values.database.external.existingSecret }}
+            - secretRef:
+                name: {{ .Values.database.external.existingSecret }}
+            {{- end }}
       volumes:
         - name: application
           configMap:

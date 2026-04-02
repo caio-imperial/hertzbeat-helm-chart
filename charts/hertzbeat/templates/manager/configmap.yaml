@@ -97,9 +97,9 @@ data:
     
       datasource:
         driver-class-name: org.postgresql.Driver
-        username: root
-        password: {{ .Values.database.rootPassword }}
-        url: jdbc:postgresql://{{ include "hertzbeat.database" . }}:5432/hertzbeat
+        username: {{ .Values.database.external.host | default "" | ne "" | ternary .Values.database.external.username "root" }}
+        password: {{ if .Values.database.external.host }}{{ if .Values.database.external.existingSecret }}${DATABASE_PASSWORD}{{ else }}{{ .Values.database.external.password }}{{ end }}{{ else }}{{ .Values.database.rootPassword }}{{ end }}
+        url: {{ if .Values.database.external.host }}jdbc:postgresql://{{ .Values.database.external.host }}:{{ .Values.database.external.port }}/{{ .Values.database.external.database }}{{ else }}jdbc:postgresql://{{ include "hertzbeat.database" . }}:5432/hertzbeat{{ end }}
         hikari:
           max-lifetime: 120000
       jpa:
