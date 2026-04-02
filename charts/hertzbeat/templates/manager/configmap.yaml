@@ -97,24 +97,9 @@ data:
     
       datasource:
         driver-class-name: org.postgresql.Driver
-        {{- $hostValue := .Values.database.external.host.value | default "" }}
-        {{- $hostFrom := .Values.database.external.host.valueFrom.secretKeyRef.key | default "" }}
-        {{- $usernameValue := .Values.database.external.username.value | default "" }}
-        {{- $usernameFrom := .Values.database.external.username.valueFrom.secretKeyRef.key | default "" }}
-        {{- $passwordValue := .Values.database.external.password.value | default "" }}
-        {{- $passwordFrom := .Values.database.external.password.valueFrom.secretKeyRef.key | default "" }}
-        {{- $databaseValue := .Values.database.external.database.value | default "" }}
-        {{- $databaseFrom := .Values.database.external.database.valueFrom.secretKeyRef.key | default "" }}
-        {{- $isExternal := or $hostValue $hostFrom }}
-        {{- if $isExternal }}
-        username: {{ if $usernameFrom }}${DATABASE_USERNAME}{{ else }}{{ $usernameValue }}{{ end }}
-        password: {{ if $passwordFrom }}${DATABASE_PASSWORD}{{ else }}{{ $passwordValue }}{{ end }}
-        url: {{ if $hostValue }}jdbc:postgresql://{{ $hostValue }}:{{ .Values.database.external.port.value }}/{{ $databaseValue }}{{ else }}jdbc:postgresql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}{{ end }}
-        {{- else }}
-        username: root
-        password: {{ .Values.database.rootPassword }}
-        url: jdbc:postgresql://{{ include "hertzbeat.database" . }}:5432/hertzbeat
-        {{- end }}
+        username: {{ include "hertzbeat.db.username" . }}
+        password: {{ include "hertzbeat.db.password" . }}
+        url: {{ include "hertzbeat.db.url" . }}
         hikari:
           max-lifetime: 120000
       jpa:
