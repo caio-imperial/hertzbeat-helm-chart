@@ -15,7 +15,9 @@
 # specific language governing permissions and limitations
 # under the License.
 
-{{- if not .Values.database.external.host }}
+{{- $externalHostValue := .Values.database.external.host.value | default "" -}}
+{{- $externalHostFrom := .Values.database.external.host.valueFrom.secretKeyRef.key | default "" -}}
+{{- if not (or $externalHostValue $externalHostFrom) }}
 apiVersion: v1
 kind: Service
 metadata:

@@ -87,12 +87,36 @@ database:
   affinity: {}
 
   external:
-    host: ""
-    port: 5432
-    username: "root"
-    password: ""
-    existingSecret: ""
-    database: "hertzbeat"
+    host:
+      value: ""
+      valueFrom:
+        secretKeyRef:
+          name: hertzbeat-secret
+          key: ""
+    port:
+      value: 5432
+      valueFrom:
+        secretKeyRef:
+          name: hertzbeat-secret
+          key: ""
+    username:
+      value: "root"
+      valueFrom:
+        secretKeyRef:
+          name: hertzbeat-secret
+          key: ""
+    password:
+      value: ""
+      valueFrom:
+        secretKeyRef:
+          name: hertzbeat-secret
+          key: ""
+    database:
+      value: "hertzbeat"
+      valueFrom:
+        secretKeyRef:
+          name: hertzbeat-secret
+          key: ""
 
 tsdb:
   image:
